@@ -244,6 +244,80 @@
       color: #19130e;
     }
 
+    .random-movie {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 48px;
+      padding: 10px 16px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface);
+      color: var(--text);
+      font-weight: 600;
+      white-space: nowrap;
+      transition: var(--transition);
+    }
+
+    .random-movie:hover {
+      border-color: var(--accent);
+      background: #302519;
+      color: var(--accent);
+    }
+
+    .random-movie:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .random-movie-dialog {
+      width: min(92vw, 480px);
+      padding: 0;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      color: var(--text);
+      background: var(--surface);
+    }
+
+    .random-movie-dialog::backdrop {
+      background: rgba(0, 0, 0, .72);
+      backdrop-filter: blur(4px);
+    }
+
+    .random-movie-dialog-content {
+      position: relative;
+      padding: 28px;
+      text-align: center;
+    }
+
+    .random-movie-close {
+      position: absolute;
+      top: 12px;
+      right: 14px;
+      border: 0;
+      color: var(--muted);
+      background: transparent;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .random-movie-poster {
+      width: 150px;
+      height: 210px;
+      margin-bottom: 18px;
+      border-radius: 12px;
+      object-fit: cover;
+    }
+
+    .random-movie-dialog h2 {
+      margin-bottom: 8px;
+    }
+
+    .random-movie-dialog p {
+      color: var(--muted);
+    }
+
     /* ===== Главный экран ===== */
 
     .hero {
@@ -940,6 +1014,14 @@
             aria-label="Количество избранных"
           >0</span>
         </button>
+
+        <button
+          id="randomMovieButton"
+          class="random-movie"
+          type="button"
+        >
+          🎲 Случайный фильм
+        </button>
       </div>
 
     </div>
@@ -1045,6 +1127,21 @@
     </section>
 
   </main>
+
+  <dialog id="randomMovieDialog" class="random-movie-dialog">
+    <div class="random-movie-dialog-content">
+      <button
+        id="randomMovieClose"
+        class="random-movie-close"
+        type="button"
+        aria-label="Закрыть"
+      >×</button>
+      <img id="randomMoviePoster" class="random-movie-poster" src="" alt="">
+      <h2 id="randomMovieTitle"></h2>
+      <p id="randomMovieInfo"></p>
+      <p id="randomMovieDescription"></p>
+    </div>
+  </dialog>
 
   <!-- ===== Подвал ===== -->
 
@@ -1343,6 +1440,14 @@
     const favoritesToggle = document.getElementById("favoritesToggle");
     const favoritesCount = document.getElementById("favoritesCount");
     const favoritesToggleText = document.getElementById("favoritesToggleText");
+
+    const randomMovieButton = document.getElementById("randomMovieButton");
+    const randomMovieDialog = document.getElementById("randomMovieDialog");
+    const randomMovieClose = document.getElementById("randomMovieClose");
+    const randomMoviePoster = document.getElementById("randomMoviePoster");
+    const randomMovieTitle = document.getElementById("randomMovieTitle");
+    const randomMovieInfo = document.getElementById("randomMovieInfo");
+    const randomMovieDescription = document.getElementById("randomMovieDescription");
 
     const resultsCount = document.getElementById("resultsCount");
     const totalCount = document.getElementById("totalCount");
@@ -1751,6 +1856,27 @@
     favoritesToggle.addEventListener("click", () => {
       onlyFavorites = !onlyFavorites;
       render();
+    });
+
+    // Показ случайной карточки фильма.
+    randomMovieButton.addEventListener("click", () => {
+      const movie = titles[Math.floor(Math.random() * titles.length)];
+
+      randomMoviePoster.src = movie.poster;
+      randomMoviePoster.alt = movie.title;
+      randomMovieTitle.textContent = movie.title;
+      randomMovieInfo.textContent = `${movie.type} · ${movie.year} · ${movie.genre} · ${movie.duration}`;
+      randomMovieDescription.textContent = movie.description;
+
+      randomMovieDialog.showModal();
+    });
+
+    randomMovieClose.addEventListener("click", () => {
+      randomMovieDialog.close();
+    });
+
+    randomMovieDialog.addEventListener("click", event => {
+      if (event.target === randomMovieDialog) randomMovieDialog.close();
     });
 
     // Действие при пустом списке.

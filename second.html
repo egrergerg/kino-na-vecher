@@ -318,6 +318,109 @@
       color: var(--muted);
     }
 
+    .movie-details-dialog {
+      width: min(92vw, 640px);
+      max-height: min(86vh, 760px);
+      overflow-y: auto;
+      padding: 0;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      color: var(--text);
+      background: var(--surface);
+    }
+
+    .movie-details-dialog::backdrop {
+      background: rgba(0, 0, 0, .72);
+      backdrop-filter: blur(4px);
+    }
+
+    .movie-details-content {
+      position: relative;
+      padding: clamp(24px, 5vw, 38px);
+    }
+
+    .movie-details-content h2 {
+      margin: 0 42px 22px 0;
+      font-size: clamp(23px, 5vw, 30px);
+      line-height: 1.25;
+    }
+
+    .movie-details-meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(125px, 1fr));
+      gap: 12px;
+      margin: 0;
+    }
+
+    .movie-details-meta div {
+      min-width: 0;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      background: #1b1e27;
+    }
+
+    .movie-details-meta dt {
+      margin-bottom: 4px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .movie-details-meta dd {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 650;
+      overflow-wrap: anywhere;
+    }
+
+    .movie-details-section {
+      margin-top: 24px;
+    }
+
+    .movie-details-section h3 {
+      margin: 0 0 10px;
+      font-size: 15px;
+    }
+
+    .movie-details-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .movie-details-description {
+      margin: 0;
+      color: #d0d1d8;
+      font-size: 14px;
+      line-height: 1.8;
+      white-space: pre-line;
+    }
+
+    .movie-details-sources {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px 14px;
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .movie-details-sources a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .movie-details-sources a:hover {
+      color: var(--accent-hover);
+    }
+
     /* ===== Главный экран ===== */
 
     .hero {
@@ -741,6 +844,25 @@
       background: transparent;
       border: 1px solid var(--border);
       color: var(--muted);
+    }
+
+    .movie-details-button {
+      min-height: 42px;
+      margin-top: 16px;
+      padding: 9px 13px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #222631;
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 700;
+      transition: var(--transition);
+    }
+
+    .movie-details-button:hover {
+      border-color: var(--accent);
+      background: #302519;
+      color: var(--accent);
     }
 
     /* ===== Пустые результаты ===== */
@@ -1170,6 +1292,42 @@
     </div>
   </dialog>
 
+  <dialog
+    id="movieDetailsDialog"
+    class="movie-details-dialog"
+    aria-labelledby="movieDetailsTitle"
+    aria-describedby="movieDetailsDescription"
+  >
+    <div class="movie-details-content">
+      <button
+        id="movieDetailsClose"
+        class="random-movie-close"
+        type="button"
+        aria-label="Закрыть подробности"
+      >×</button>
+      <h2 id="movieDetailsTitle"></h2>
+      <dl class="movie-details-meta">
+        <div><dt>Год</dt><dd id="movieDetailsYear"></dd></div>
+        <div><dt>Тип</dt><dd id="movieDetailsType"></dd></div>
+        <div><dt>Жанр</dt><dd id="movieDetailsGenre"></dd></div>
+        <div><dt>Длительность</dt><dd id="movieDetailsDuration"></dd></div>
+      </dl>
+      <section class="movie-details-section" aria-labelledby="movieDetailsThemesTitle">
+        <h3 id="movieDetailsThemesTitle">Темы</h3>
+        <ul id="movieDetailsThemes" class="movie-details-tags"></ul>
+      </section>
+      <section class="movie-details-section" aria-labelledby="movieDetailsDescriptionTitle">
+        <h3 id="movieDetailsDescriptionTitle">Описание</h3>
+        <p id="movieDetailsDescription" class="movie-details-description"></p>
+      </section>
+      <div class="movie-details-sources">
+        <span>Авторское описание без спойлеров. Найти карточку:</span>
+        <a id="movieDetailsKinopoisk" target="_blank" rel="noopener noreferrer">Кинопоиск</a>
+        <a id="movieDetailsImdb" target="_blank" rel="noopener noreferrer">IMDb</a>
+      </div>
+    </div>
+  </dialog>
+
   <!-- ===== Подвал ===== -->
 
   <footer class="site-footer">
@@ -1194,6 +1352,7 @@
         genre: "Драма",
         duration: "2 ч 22 мин",
         description: "История о надежде, дружбе и свободе, которую невозможно отнять.",
+        fullDescription: "Банкир Энди Дюфрейн получает два пожизненных срока за убийство жены и её возлюбленного, хотя продолжает настаивать на своей невиновности. В стенах Шоушенка ему приходится заново учиться жить среди жестоких правил тюрьмы и заключённых, а спокойствие, наблюдательность и знания постепенно помогают завоевать уважение. Энди сближается с Рэедом, который давно утратил веру в перемены. Их многолетняя дружба становится тихой опорой в мире, где надежду считают опасной слабостью.",
         tags: ["classic"],
         themes: ["Дружба", "Надежда", "Свобода", "Побег"],
         poster: "images/shawshank-redemption.jpg",
@@ -1207,6 +1366,7 @@
         genre: "Драма",
         duration: "2 ч 22 мин",
         description: "Необыкновенная жизнь простого человека на фоне больших событий.",
+        fullDescription: "Форрест Гамп рассказывает незнакомцам на автобусной остановке о своей жизни — от детства в Алабаме до событий, изменивших Америку. Он не считает себя особенным, но благодаря упорству и доброте снова и снова оказывается в центре важных исторических моментов. Пока Форрест добивается успеха в самых неожиданных делах, его мысли возвращаются к Дженни — подруге, с которой его связывает долгая и непростая история. Это рассказ о случайностях, верности и собственном пути.",
         tags: ["classic"],
         themes: ["Любовь", "Дружба", "Судьба", "Жизнь"],
         poster: "images/forrest-gump.jpg",
@@ -1220,6 +1380,7 @@
         genre: "Фантастика",
         duration: "1 ч 56 мин",
         description: "Путешествие во времени, которое изменит прошлое и будущее.",
+        fullDescription: "Подросток Марти Макфлай случайно отправляется из 1985 года в прошлое — в 1955-й — на машине времени, созданной эксцентричным учёным Эмметом Брауном. Там он знакомится со своими будущими родителями в юности и невольно вмешивается в обстоятельства их первой встречи. Чтобы не исчезнуть из собственного времени, Марти должен помочь им сблизиться и найти способ вернуться домой. Приключение превращает семейную историю в гонку со временем.",
         tags: ["classic"],
         themes: ["Путешествия во времени", "Дружба", "Приключения", "Семья"],
         poster: "images/back-to-the-future.jpg",
@@ -1233,6 +1394,7 @@
         genre: "Комедия",
         duration: "10 сезонов",
         description: "Шестеро друзей, Нью-Йорк и множество смешных жизненных историй.",
+        fullDescription: "В центре сериала — шестеро друзей, чьи жизни пересекаются в Нью-Йорке: Рэйчел, Моника, Фиби, Джоуи, Чендлер и Росс. Они встречаются в кофейне Central Perk, делят квартиры, поддерживают друг друга и вместе проходят через поиски работы, перемены в отношениях и взрослые решения. Романтические истории здесь соседствуют с повседневными неудачами и фирменными шутками. Со временем компания становится для каждого второй семьёй.",
         tags: ["classic"],
         themes: ["Дружба", "Любовь", "Нью-Йорк", "Юмор"],
         poster: "images/friends.jpg",
@@ -1248,6 +1410,7 @@
         genre: "Детектив",
         duration: "2 ч 10 мин",
         description: "Остроумное расследование загадочной смерти в большой семье.",
+        fullDescription: "После смерти знаменитого писателя Харлана Тромби его родственники собираются в семейном поместье, где каждый, кажется, что-то скрывает. На первый взгляд наследники спорят лишь о деньгах и завещании, но частный детектив Бенуа Блан замечает противоречия в их рассказах. Расследование постепенно раскрывает давние обиды, соперничество и неожиданные связи между членами семьи. Это детектив, в котором важны не только улики, но и то, кому выгодна каждая версия событий.",
         tags: ["one-night"],
         themes: ["Загадка", "Расследование", "Семейные тайны", "Наследство"],
         poster: "images/knives-out.jpg",
@@ -1261,6 +1424,7 @@
         genre: "Комедия",
         duration: "1 ч 39 мин",
         description: "Эксцентричное приключение консьержа легендарного отеля.",
+        fullDescription: "В вымышленной европейской стране молодой посыльный Зеро становится помощником мсье Густава — безупречно воспитанного консьержа роскошного отеля «Гранд Будапешт». После смерти одной из постоялиц Густав неожиданно получает ценную картину и оказывается втянут в спор за наследство. Друзьям приходится скрываться, искать союзников и разбираться в интригах влиятельной семьи. Их приключение разворачивается на фоне перемен, которые постепенно меняют привычный мир.",
         tags: ["one-night"],
         themes: ["Приключения", "Дружба", "Искусство", "Юмор"],
         poster: "images/grand-budapest-hotel.jpg",
@@ -1274,6 +1438,7 @@
         genre: "Драмеди",
         duration: "1 ч 52 мин",
         description: "Неожиданная дружба двух совершенно разных людей.",
+        fullDescription: "После несчастного случая богатый парижанин Филипп нанимает помощником Дрисса — молодого человека, который пришёл на собеседование скорее ради формальной подписи. Их характеры и привычки совершенно разные: один привык к размеренной жизни и классической музыке, другой действует прямо и не признаёт условностей. Постепенно рабочие отношения превращаются в искреннюю дружбу, которая помогает обоим иначе взглянуть на свои возможности. История сочетает юмор, тепло и разговор о достоинстве и самостоятельности.",
         tags: ["one-night"],
         themes: ["Дружба", "Поддержка", "Надежда", "Юмор"],
         poster: "images/intouchables.jpg",
@@ -1287,6 +1452,7 @@
         genre: "Комедия",
         duration: "1 ч 55 мин",
         description: "Обычный персонаж видеоигры решает переписать собственную судьбу.",
+        fullDescription: "Гай — скромный банковский служащий, который каждый день проживает похожий день в красочном открытом игровом мире. Встреча с загадочной девушкой помогает ему заметить, что он всего лишь персонаж видеоигры, а привычная реальность подчиняется правилам чужого кода. Решив действовать по-своему, Гай становится неожиданным героем и вмешивается в планы разработчиков. Его поступки ставят под вопрос, кто именно имеет право выбирать, каким будет этот виртуальный мир.",
         tags: ["one-night"],
         themes: ["Видеоигры", "Виртуальный мир", "Свобода выбора", "Любовь"],
         poster: "images/free-guy.jpg",
@@ -1302,6 +1468,7 @@
         genre: "Фантастика",
         duration: "2 ч 28 мин",
         description: "Путешествие по снам, где реальность постоянно ускользает.",
+        fullDescription: "Доминик Кобб — специалист по проникновению в сны, где он извлекает из подсознания людей ценные секреты. Из-за своего прошлого он не может вернуться к детям и получает предложение, способное изменить его положение: не украсть идею, а внедрить её в сознание человека. Для этого Кобб собирает команду и разрабатывает многоуровневую операцию, в которой каждый сон имеет собственные правила и опасности. Чем глубже они погружаются, тем труднее отделить план от личных воспоминаний.",
         tags: ["thoughtful"],
         themes: ["Сны", "Загадка", "Реальность", "Ограбление"],
         poster: "images/inception.jpg",
@@ -1315,6 +1482,7 @@
         genre: "Фантастика",
         duration: "2 ч 49 мин",
         description: "Космическая одиссея о времени, любви и будущем человечества.",
+        fullDescription: "В недалёком будущем засуха и пыльные бури угрожают продовольствию и самому существованию людей. Бывший пилот Купер присоединяется к секретной космической экспедиции: команда должна пройти через загадочную червоточину и найти планету, на которой человечество сможет начать новую жизнь. Пока исследователи сталкиваются с экстремальными условиями и относительностью времени, на Земле их ждут семьи и непростые решения. В основе путешествия — конфликт между долгом перед человечеством и личной привязанностью.",
         tags: ["thoughtful"],
         themes: ["Космос", "Время", "Семья", "Спасение человечества"],
         poster: "images/interstellar.jpg",
@@ -1328,6 +1496,7 @@
         genre: "Фантастика",
         duration: "7 сезонов",
         description: "Самостоятельные истории о технологиях и человеческой природе.",
+        fullDescription: "«Чёрное зеркало» — антология самостоятельных историй о людях, чья повседневная жизнь меняется под влиянием новых технологий. В одних сериях цифровые рейтинги определяют общественный статус, в других память, развлечения или связь между людьми приобретают неожиданные последствия. Сюжеты не продолжают друг друга, поэтому каждый эпизод предлагает отдельный мир, героев и моральную дилемму. Вместе они исследуют, как технический прогресс усиливает уже существующие человеческие желания, страхи и слабости.",
         tags: ["thoughtful"],
         themes: ["Технологии", "Будущее", "Общество", "Моральный выбор"],
         poster: "images/black-mirror.jpg",
@@ -1341,6 +1510,7 @@
         genre: "Фэнтези",
         duration: "3 сезона",
         description: "Путешествие между мирами, полное тайн и сложных вопросов.",
+        fullDescription: "Лира Белаква растёт в мире, где у каждого человека есть деймон — животное-компаньон, связанное с его душой. Когда исчезает её друг, Лира отправляется на север и постепенно узнаёт о таинственной Пыли и силе, которая пытается контролировать детей и их судьбы. По мере путешествия она встречает людей из других миров, в том числе Уилла, и оказывается втянута в события, выходящие далеко за пределы её родного мира. Сериал соединяет приключение, семейную драму и фантастическую загадку.",
         tags: ["thoughtful"],
         themes: ["Параллельные миры", "Магия", "Загадка", "Приключения"],
         poster: "images/his-dark-materials.jpg",
@@ -1356,6 +1526,7 @@
         genre: "Комедия",
         duration: "9 сезонов",
         description: "Неловкие и забавные будни сотрудников бумажной компании.",
+        fullDescription: "Сериал показывает будни филиала бумажной компании Dunder Mifflin в Скрэнтоне в формате псевдодокументального наблюдения. Руководитель Майкл Скотт искренне считает себя душой коллектива, хотя его попытки развеселить коллег часто оборачиваются неловкостью. Сотрудники занимаются продажами, офисными интригами и обычной рутиной, параллельно строя дружеские и романтические отношения. Комедия рождается из узнаваемых характеров и мелких событий рабочего дня.",
         tags: ["background"],
         themes: ["Работа", "Коллеги", "Юмор", "Дружба"],
         poster: "images/the-office.jpg",
@@ -1369,6 +1540,7 @@
         genre: "Комедия",
         duration: "8 сезонов",
         description: "Весёлая команда детективов раскрывает дела и шутит без остановки.",
+        fullDescription: "В бруклинском полицейском участке работает талантливый, но несерьёзный детектив Джейк Перальта. С появлением нового капитана Рэймонда Холта привычный порядок меняется: команде приходится сочетать расследования с требованиями дисциплины и учиться работать вместе. Коллеги — в том числе амбициозная Эми, прямолинейная Роза и преданный сержант Терри — регулярно спорят, соревнуются и поддерживают друг друга. Сериал смешивает полицейские дела, офисную комедию и историю дружного коллектива.",
         tags: ["background"],
         themes: ["Полиция", "Расследование", "Команда", "Юмор"],
         poster: "images/brooklyn-nine-nine.jpg",
@@ -1382,6 +1554,7 @@
         genre: "Ситком",
         duration: "9 сезонов",
         description: "Любовь, дружба и бесконечные приключения в Нью-Йорке.",
+        fullDescription: "Тед Мосби начинает рассказ детям о том, как встретил их маму, и возвращается к событиям своей молодости в Нью-Йорке. Его поиски любви разворачиваются рядом с историями друзей: обаятельного Барни, пары Маршалла и Лили и независимой Робин. Годы свиданий, ошибок, переездов и важных решений складываются в большое воспоминание о взрослении и дружбе. Сериал играет с формой рассказа, возвращаясь к одним событиям с новых точек зрения.",
         tags: ["background"],
         themes: ["Дружба", "Любовь", "Нью-Йорк", "Судьба"],
         poster: "images/how-i-met-your-mother.jpg",
@@ -1395,6 +1568,7 @@
         genre: "Комедия",
         duration: "11 сезонов",
         description: "Тёплая и смешная хроника жизни большой современной семьи.",
+        fullDescription: "Псевдодокументальный сериал знакомит с тремя связанными семьями Лос-Анджелеса: Джей и Глория воспитывают детей в новом браке, Клэр и Фил справляются с взрослением троих детей, а Митчелл и Кэмерон строят собственную семью. Их бытовые заботы, праздники и недоразумения показывают, насколько по-разному может выглядеть семейная жизнь. Герои часто не понимают друг друга, но в решающие моменты оказываются рядом. Юмор возникает из контраста поколений, характеров и родительских методов.",
         tags: ["background"],
         themes: ["Семья", "Родители и дети", "Любовь", "Юмор"],
         poster: "images/modern-family.jpg",
@@ -1410,6 +1584,7 @@
         genre: "Фантастика",
         duration: "2 ч 46 мин",
         description: "Пол Атрейдес объединяется с фременами и вступает в борьбу за судьбу Арракиса.",
+        fullDescription: "Продолжая путь после событий первой части, Пол Атрейдес оказывается среди фременов и учится жить по законам пустыни. Вместе с Чани и новыми союзниками он готовится противостоять дому Харконненов, который снова стремится подчинить Арракис и его ценный ресурс — пряность. Полу приходится выбирать между личным желанием мести и ролью, которую ему отводят пророчества и политическая борьба. Решения героя способны изменить не только будущее планеты, но и баланс сил во всей империи.",
         tags: ["new-releases"],
         themes: ["Арракис", "Пустыня", "Политика", "Эпическое приключение"],
         poster: "https://image.tmdb.org/t/p/w500/6izwz7rsy95ARzTR3poZ8H6c5pp.jpg",
@@ -1423,6 +1598,7 @@
         genre: "Боевик, комедия",
         duration: "2 ч 8 мин",
         description: "Дэдпул отправляется в новое приключение и неожиданно встречает Росомаху.",
+        fullDescription: "Уэйд Уилсон пытается оставить прошлую жизнь наёмника позади, но его планы рушатся, когда представители Управления временными изменениями предлагают ему участие в опасной операции. Чтобы защитить собственную временную линию, Дэдпулу приходится отправиться в мультивселенную и разыскать человека, который совсем не рад встрече. Так он объединяется с Росомахой — героем со своими потерями и непростым характером. Их совместная миссия превращается в череду конфликтов, погонь и совершенно непредсказуемых союзов.",
         tags: ["new-releases"],
         themes: ["Супергерои", "Мультивселенная", "Юмор", "Приключения"],
         poster: "https://image.tmdb.org/t/p/w500/n4EpKQhva5whawt4IsblPqT2n7u.jpg",
@@ -1436,6 +1612,7 @@
         genre: "Триллер, ужасы",
         duration: "2 ч 17 мин",
         description: "Братья-близнецы возвращаются домой и сталкиваются с мрачной тайной родного города.",
+        fullDescription: "В 1930-е годы братья-близнецы Смоук и Стэк возвращаются в родной городок на юге США после долгого отсутствия. Они открывают музыкальный клуб, рассчитывая создать место, где местные жители смогут собираться и слушать блюз. Однако вечер открытия приносит не только музыку и новых гостей: за пределами клуба пробуждается опасность, которую нельзя объяснить обычными правилами. История соединяет семейные связи, культуру дельты Миссисипи и нарастающий сверхъестественный ужас.",
         tags: ["new-releases"],
         themes: ["Тайна", "Юг США", "Музыка", "Сверхъестественное"],
         poster: "https://image.tmdb.org/t/p/w500/fWPgbnt2LSqkQ6cdQc0SZN9CpLm.jpg",
@@ -1449,6 +1626,7 @@
         genre: "Приключения, фэнтези",
         duration: "1 ч 41 мин",
         description: "Группа героев попадает в кубический мир, где воображение помогает выжить.",
+        fullDescription: "Четверо людей, каждый со своими повседневными проблемами, неожиданно проходят через портал в Верхний мир — необычную кубическую вселенную. Чтобы найти дорогу назад, им приходится освоить местные правила: строить, собирать ресурсы и защищаться от опасных существ. В пути к компании присоединяется опытный мастер Стив, который помогает увидеть возможности этого мира. Приключение превращает незнакомцев в команду и проверяет, как далеко может завести воображение.",
         tags: ["new-releases"],
         themes: ["Игры", "Фэнтези", "Команда", "Приключения"],
         poster: "https://image.tmdb.org/t/p/w500/yFHHfHcUgGAxziP1C3lLt0q2T4s.jpg",
@@ -1462,6 +1640,7 @@
         genre: "Историческая драма",
         duration: "1 сезон · 10 серий",
         description: "В Японии XVII века английский мореплаватель оказывается втянут в борьбу за власть.",
+        fullDescription: "В Японии начала XVII века английский мореплаватель Джон Блэкторн терпит кораблекрушение и оказывается в стране, чьи обычаи и политические порядки ему незнакомы. Его судьба пересекается с амбициями лорда Торанаги, который ведёт борьбу за влияние в преддверии масштабного конфликта. Переводчица Марико становится связующим звеном между чужеземцем и японским двором, где каждое слово и жест имеют значение. Сериал рассказывает о столкновении культур, верности и цене власти.",
         tags: ["new-releases"],
         themes: ["Япония", "Самураи", "Политика", "История"],
         poster: "https://image.tmdb.org/t/p/w500/7O4iVfOMQmdCSxhOg1WnzG1AgYT.jpg",
@@ -1475,6 +1654,7 @@
         genre: "Криминальная драма",
         duration: "1 сезон · 8 серий",
         description: "Освальд Кобб пытается завладеть криминальным миром Готэма после падения Фальконе.",
+        fullDescription: "После гибели криминального босса Кармайна Фальконе в Готэме образуется вакуум власти. Освальд Кобб, известный как Пингвин, решает использовать хаос, чтобы подняться от мелкого игрока до главы преступного мира, но за влияние одновременно борются старые и новые противники. Его планы осложняют отношения с матерью Фрэнсис и необходимость постоянно скрывать уязвимость за расчётливостью. Сериал показывает криминальный Готэм глазами человека, готового рискнуть всем ради признания и власти.",
         tags: ["new-releases"],
         themes: ["Готэм", "Криминал", "Борьба за власть", "Антигерой"],
         poster: "https://image.tmdb.org/t/p/w500/vOWcqC4oDQws1doDWLO7d3dh5qc.jpg",
@@ -1561,6 +1741,18 @@
     const randomMovieTitle = document.getElementById("randomMovieTitle");
     const randomMovieInfo = document.getElementById("randomMovieInfo");
     const randomMovieDescription = document.getElementById("randomMovieDescription");
+
+    const movieDetailsDialog = document.getElementById("movieDetailsDialog");
+    const movieDetailsClose = document.getElementById("movieDetailsClose");
+    const movieDetailsTitle = document.getElementById("movieDetailsTitle");
+    const movieDetailsYear = document.getElementById("movieDetailsYear");
+    const movieDetailsType = document.getElementById("movieDetailsType");
+    const movieDetailsGenre = document.getElementById("movieDetailsGenre");
+    const movieDetailsDuration = document.getElementById("movieDetailsDuration");
+    const movieDetailsThemes = document.getElementById("movieDetailsThemes");
+    const movieDetailsDescription = document.getElementById("movieDetailsDescription");
+    const movieDetailsKinopoisk = document.getElementById("movieDetailsKinopoisk");
+    const movieDetailsImdb = document.getElementById("movieDetailsImdb");
 
     const resultsCount = document.getElementById("resultsCount");
     const totalCount = document.getElementById("totalCount");
@@ -1776,10 +1968,45 @@
 
       footer.append(genre, duration);
 
-      content.append(meta, movieTitle, description, themes, footer);
+      const detailsButton = createElement(
+        "button",
+        "movie-details-button",
+        "Подробнее"
+      );
+      detailsButton.type = "button";
+      detailsButton.setAttribute(
+        "aria-label",
+        `Подробнее о фильме или сериале «${movie.title}»`
+      );
+      detailsButton.addEventListener("click", () => {
+        openMovieDetails(movie);
+      });
+
+      content.append(meta, movieTitle, description, themes, footer, detailsButton);
       card.append(poster, content);
 
       return card;
+    }
+
+    function openMovieDetails(movie) {
+      movieDetailsTitle.textContent = movie.title;
+      movieDetailsYear.textContent = String(movie.year);
+      movieDetailsType.textContent = movie.type;
+      movieDetailsGenre.textContent = movie.genre;
+      movieDetailsDuration.textContent = movie.duration;
+      movieDetailsDescription.textContent = movie.fullDescription;
+      const sourceQuery = encodeURIComponent(`${movie.title} ${movie.year}`);
+      movieDetailsKinopoisk.href =
+        `https://www.kinopoisk.ru/index.php?kp_query=${sourceQuery}`;
+      movieDetailsImdb.href =
+        `https://www.imdb.com/find/?q=${sourceQuery}`;
+
+      const themes = movie.themes.map(theme =>
+        createElement("li", "theme-tag", theme)
+      );
+      movieDetailsThemes.replaceChildren(...themes);
+
+      movieDetailsDialog.showModal();
     }
 
     /* ===== Формирование подборки ===== */
@@ -1998,6 +2225,23 @@
 
     randomMovieDialog.addEventListener("click", event => {
       if (event.target === randomMovieDialog) randomMovieDialog.close();
+    });
+
+    movieDetailsClose.addEventListener("click", () => {
+      movieDetailsDialog.close();
+    });
+
+    movieDetailsDialog.addEventListener("click", event => {
+      if (event.target === movieDetailsDialog) {
+        movieDetailsDialog.close();
+      }
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape" && movieDetailsDialog.open) {
+        event.preventDefault();
+        movieDetailsDialog.close();
+      }
     });
 
     // Действие при пустом списке.

@@ -835,6 +835,22 @@
       line-height: 1.9;
     }
 
+    .about-credits {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .about-credits img {
+      width: 72px;
+      height: auto;
+      flex-shrink: 0;
+    }
+
     /* ===== Подвал ===== */
 
     .site-footer {
@@ -920,7 +936,7 @@
         gap: 65px;
       }
 
-      .about-inner > div {
+      .about-inner > div:first-child {
         flex-shrink: 0;
       }
     }
@@ -1050,12 +1066,12 @@
         <div class="hero-stats">
           <span class="stat-chip">
             <span aria-hidden="true">✦</span>
-            <strong id="totalCount">16</strong> историй
+            <strong id="totalCount">22</strong> историй
           </span>
 
           <span class="stat-chip">
             <span aria-hidden="true">▦</span>
-            <strong>4</strong> подборки
+            <strong>5</strong> подборок
           </span>
 
           <span class="stat-chip">
@@ -1077,7 +1093,7 @@
         </h2>
 
         <div class="results-count" role="status" aria-live="polite">
-          Найдено: <strong id="resultsCount">16</strong>
+          Найдено: <strong id="resultsCount">22</strong>
         </div>
       </div>
 
@@ -1115,13 +1131,24 @@
           <h2 id="aboutTitle">Кино без долгих поисков.</h2>
         </div>
 
-        <p>
-          «Кино на вечер» — небольшая коллекция фильмов и сериалов,
-          которые хочется включить после долгого дня. Здесь нет
-          рейтингов и сложных алгоритмов: только хорошие истории,
-          удобные подборки и возможность сохранить понравившееся
-          в избранное прямо в браузере.
-        </p>
+        <div>
+          <p>
+            «Кино на вечер» — небольшая коллекция фильмов и сериалов,
+            которые хочется включить после долгого дня. Здесь нет
+            рейтингов и сложных алгоритмов: только хорошие истории,
+            удобные подборки и возможность сохранить понравившееся
+            в избранное прямо в браузере.
+          </p>
+          <div class="about-credits">
+            <a href="https://www.themoviedb.org/" target="_blank" rel="noopener noreferrer" aria-label="The Movie Database">
+              <img
+                src="https://www.themoviedb.org/assets/v4/logos/v2/blue_square_1-5bdc75aaebeb75dc7ae79426ddd9be3b2be1e342510f8202baf6bffa71d7f5c4.svg"
+                alt="TMDB"
+              >
+            </a>
+            <span>Постеры предоставлены TMDB. This product uses the TMDB API but is not endorsed or certified by TMDB.</span>
+          </div>
+        </div>
 
       </div>
     </section>
@@ -1372,6 +1399,86 @@
         themes: ["Семья", "Родители и дети", "Любовь", "Юмор"],
         poster: "images/modern-family.jpg",
         color: "#698b76"
+      },
+
+      // Новинки
+      {
+        id: 17,
+        title: "Дюна: Часть вторая",
+        year: 2024,
+        type: "Фильм",
+        genre: "Фантастика",
+        duration: "2 ч 46 мин",
+        description: "Пол Атрейдес объединяется с фременами и вступает в борьбу за судьбу Арракиса.",
+        tags: ["new-releases"],
+        themes: ["Арракис", "Пустыня", "Политика", "Эпическое приключение"],
+        poster: "https://image.tmdb.org/t/p/w500/6izwz7rsy95ARzTR3poZ8H6c5pp.jpg",
+        color: "#b67842"
+      },
+      {
+        id: 18,
+        title: "Дэдпул и Росомаха",
+        year: 2024,
+        type: "Фильм",
+        genre: "Боевик, комедия",
+        duration: "2 ч 8 мин",
+        description: "Дэдпул отправляется в новое приключение и неожиданно встречает Росомаху.",
+        tags: ["new-releases"],
+        themes: ["Супергерои", "Мультивселенная", "Юмор", "Приключения"],
+        poster: "https://image.tmdb.org/t/p/w500/n4EpKQhva5whawt4IsblPqT2n7u.jpg",
+        color: "#a83b37"
+      },
+      {
+        id: 19,
+        title: "Грешники",
+        year: 2025,
+        type: "Фильм",
+        genre: "Триллер, ужасы",
+        duration: "2 ч 17 мин",
+        description: "Братья-близнецы возвращаются домой и сталкиваются с мрачной тайной родного города.",
+        tags: ["new-releases"],
+        themes: ["Тайна", "Юг США", "Музыка", "Сверхъестественное"],
+        poster: "https://image.tmdb.org/t/p/w500/fWPgbnt2LSqkQ6cdQc0SZN9CpLm.jpg",
+        color: "#7c3930"
+      },
+      {
+        id: 20,
+        title: "Minecraft в кино",
+        year: 2025,
+        type: "Фильм",
+        genre: "Приключения, фэнтези",
+        duration: "1 ч 41 мин",
+        description: "Группа героев попадает в кубический мир, где воображение помогает выжить.",
+        tags: ["new-releases"],
+        themes: ["Игры", "Фэнтези", "Команда", "Приключения"],
+        poster: "https://image.tmdb.org/t/p/w500/yFHHfHcUgGAxziP1C3lLt0q2T4s.jpg",
+        color: "#57804a"
+      },
+      {
+        id: 21,
+        title: "Сёгун",
+        year: 2024,
+        type: "Сериал",
+        genre: "Историческая драма",
+        duration: "1 сезон · 10 серий",
+        description: "В Японии XVII века английский мореплаватель оказывается втянут в борьбу за власть.",
+        tags: ["new-releases"],
+        themes: ["Япония", "Самураи", "Политика", "История"],
+        poster: "https://image.tmdb.org/t/p/w500/7O4iVfOMQmdCSxhOg1WnzG1AgYT.jpg",
+        color: "#79423c"
+      },
+      {
+        id: 22,
+        title: "Пингвин",
+        year: 2024,
+        type: "Сериал",
+        genre: "Криминальная драма",
+        duration: "1 сезон · 8 серий",
+        description: "Освальд Кобб пытается завладеть криминальным миром Готэма после падения Фальконе.",
+        tags: ["new-releases"],
+        themes: ["Готэм", "Криминал", "Борьба за власть", "Антигерой"],
+        poster: "https://image.tmdb.org/t/p/w500/vOWcqC4oDQws1doDWLO7d3dh5qc.jpg",
+        color: "#45616b"
       }
     ];
 
@@ -1401,6 +1508,12 @@
         title: "Для фона",
         description: "Уютные сериалы для отдыха и домашних дел.",
         icon: "☕"
+      },
+      {
+        id: "new-releases",
+        title: "Новинки",
+        description: "Свежие фильмы и сериалы последних лет.",
+        icon: "✧"
       }
     ];
 
@@ -1528,21 +1641,23 @@
 
       poster.style.setProperty("--poster-color", movie.color);
 
-      const posterImage = createElement("img", "poster-image");
-      posterImage.alt = `Постер «${movie.title}»`;
-      posterImage.width = 600;
-      posterImage.height = 900;
-      posterImage.loading = "lazy";
-      posterImage.decoding = "async";
-      posterImage.addEventListener("load", () => {
-        poster.classList.add("has-poster");
-      });
-      posterImage.addEventListener("error", () => {
-        poster.classList.remove("has-poster");
-        posterImage.remove();
-      });
-      posterImage.src = movie.poster;
-      poster.appendChild(posterImage);
+      if (movie.poster) {
+        const posterImage = createElement("img", "poster-image");
+        posterImage.alt = `Постер «${movie.title}»`;
+        posterImage.width = 600;
+        posterImage.height = 900;
+        posterImage.loading = "lazy";
+        posterImage.decoding = "async";
+        posterImage.addEventListener("load", () => {
+          poster.classList.add("has-poster");
+        });
+        posterImage.addEventListener("error", () => {
+          poster.classList.remove("has-poster");
+          posterImage.remove();
+        });
+        posterImage.src = movie.poster;
+        poster.appendChild(posterImage);
+      }
 
       const posterMark = createElement(
         "span",
@@ -1862,8 +1977,14 @@
     randomMovieButton.addEventListener("click", () => {
       const movie = titles[Math.floor(Math.random() * titles.length)];
 
-      randomMoviePoster.src = movie.poster;
-      randomMoviePoster.alt = movie.title;
+      randomMoviePoster.hidden = !movie.poster;
+      if (movie.poster) {
+        randomMoviePoster.src = movie.poster;
+        randomMoviePoster.alt = movie.title;
+      } else {
+        randomMoviePoster.removeAttribute("src");
+        randomMoviePoster.alt = "";
+      }
       randomMovieTitle.textContent = movie.title;
       randomMovieInfo.textContent = `${movie.type} · ${movie.year} · ${movie.genre} · ${movie.duration}`;
       randomMovieDescription.textContent = movie.description;
